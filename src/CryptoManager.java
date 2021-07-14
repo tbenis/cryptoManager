@@ -1,4 +1,8 @@
-
+/*
+* Author: Benis Tambe
+* Date: 07/13/2021
+* Class: CMSC 203
+* */
 public class CryptoManager {
 
 	private static final char LOWER_BOUND = ' ';
@@ -25,27 +29,21 @@ public class CryptoManager {
 	 * @param key an integer that specifies the offset of each character
 	 * @return the encrypted string
 	 */
-	public static int putInBounds(int key){
-		while(key > UPPER_BOUND) {
-			key -= (UPPER_BOUND - LOWER_BOUND);
-		}
-		return key;
-	}
 	public static String encryptCaesar(String plainText, int key) { //HELLO, 6
-//		key = putInBounds(key);
-		String encryptedCeaser = "";
+		String encryptedCaesar = "";
+		//First check if String is in bounds
 		if(stringInBounds(plainText)){
 			for(int i = 0; i < plainText.length();  i++){
-				int ascii = (int) plainText.charAt(i); //H == 72
+				//Add up the int value for each
 				int asciiCombined = (int) plainText.charAt(i)+ key; //H == 72
 				while(asciiCombined > UPPER_BOUND){
 					asciiCombined -= RANGE;
 				}
 
-					encryptedCeaser += Character.toString((char) (asciiCombined));
+					encryptedCaesar += Character.toString((char) (asciiCombined));
 			}
 		}
-		return encryptedCeaser;
+		return encryptedCaesar;
 	}
 
 	/**
@@ -63,12 +61,14 @@ public class CryptoManager {
 		while(elongateUsingBellasoStr.length() != plainText.length()){
 			elongateUsingBellasoStr += bellasoStr.charAt(j);
 			j++;
+			//Reset j when end of BellasoStr reached
 			if(j == bellasoStr.length()){
 				j= 0;
 			}
 		}
 
 		for(int i = 0; i < plainText.length();  i++){
+			//First check if String is in bounds
 			if(stringInBounds(plainText)){
 				int asciiCombined = (int) plainText.charAt(i) + (int) elongateUsingBellasoStr.charAt(i); //H == 72
 				if(asciiCombined > UPPER_BOUND) {
@@ -91,27 +91,20 @@ public class CryptoManager {
 	 * @return the plain text string
 	 */
 	public static String decryptCaesar(String encryptedText, int key) {
-		String decryptedCeaser = "";
-//		key = putInBounds(key);
-//
-//		for(int i = 0; i < encryptedText.length();  i++){
-//			int ascii = (int) encryptedText.charAt(i); //H == 72
-//			if(stringInBounds(encryptedText)){
-//				decryptedCeaser += Character.toString((char) (ascii-key));
-//			}
-//		}
-
+		String decryptedCaesar = "";
+		//First check if String is in bounds
 		if(stringInBounds(encryptedText)){
 			for(int i = 0; i < encryptedText.length();  i++){
+				//Undoing decryption by subtracting the key from encrypted character ascii int
 				int asciiCombined = (int) encryptedText.charAt(i)- key; //H == 72
 				while(asciiCombined < LOWER_BOUND){
 					asciiCombined += RANGE;
 				}
 
-				decryptedCeaser += Character.toString((char) (asciiCombined));
+				decryptedCaesar += Character.toString((char) (asciiCombined));
 			}
 		}
-		return decryptedCeaser;
+		return decryptedCaesar;
 	}
 
 	/**
@@ -126,14 +119,16 @@ public class CryptoManager {
 		String decryptedBellaso = "";
 		int j = 0;
 		while(bellasoStr.length() < encryptedText.length()){
+			// Changing BellasoStr to original length
 			bellasoStr += bellasoStr.charAt(j);
 			j++;
 			if(j == bellasoStr.length()){
-				j= 0;
+				j=0;
 			}
 		}
-
+		//Reversing the encription by changing  the signs and comparison conditions
 		for(int i = 0; i < encryptedText.length();  i++){
+			//First check if String is in bounds
 			if(stringInBounds(encryptedText)){
 				int asciiCombined = (int) encryptedText.charAt(i) - (int) bellasoStr.charAt(i); //H == 72
 				if(asciiCombined < LOWER_BOUND) {
